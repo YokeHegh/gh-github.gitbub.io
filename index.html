@@ -1,1 +1,149 @@
 <h1>Welcome to my corern!!!</h1>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no">
+  <title>New Year Countdown</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      font-family: Arial, sans-serif;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+      padding: 0 20px; /* Adds padding on mobile */
+      background: linear-gradient(135deg, #ff6b6b, #f7ff88);
+      color: #333;
+    }
+
+    .countdown-container {
+      text-align: center;
+      max-width: 500px;
+      width: 100%;
+    }
+
+    h1 {
+      font-size: 2em;
+      margin-bottom: 20px;
+    }
+
+    .countdown {
+      display: flex;
+      justify-content: space-around;
+      font-size: 3em;
+      font-weight: bold;
+    }
+
+    .time-section {
+      text-align: center;
+    }
+
+    .time-section span {
+      display: block;
+      font-size: 0.6em;
+      font-weight: normal;
+    }
+
+    .message {
+      margin-top: 20px;
+      font-size: 1.2em;
+      color: #444;
+    }
+
+    .play-music-btn {
+      margin-top: 30px;
+      padding: 10px 20px;
+      font-size: 1em;
+      cursor: pointer;
+      background-color: #333;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+    }
+
+    .play-music-btn:hover {
+      background-color: #555;
+    }
+
+    /* Responsive adjustments for mobile */
+    @media (max-width: 480px) {
+      .countdown {
+        font-size: 2em;
+        gap: 5px;
+      }
+      .play-music-btn {
+        font-size: 0.9em;
+        padding: 8px 15px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="countdown-container">
+    <h1>New Year Countdown</h1>
+    <div class="countdown">
+      <div class="time-section">
+        <div id="days">00</div>
+        <span>Days</span>
+      </div>
+      <div class="time-section">
+        <div id="hours">00</div>
+        <span>Hours</span>
+      </div>
+      <div class="time-section">
+        <div id="minutes">00</div>
+        <span>Minutes</span>
+      </div>
+      <div class="time-section">
+        <div id="seconds">00</div>
+        <span>Seconds</span>
+      </div>
+    </div>
+    <div class="message" id="message"></div>
+    <button class="play-music-btn" onclick="playMusic()">Play Music</button>
+    <audio id="newYearMusic" src="your-music-file.mp3" preload="auto"></audio>
+  </div>
+
+  <script>
+    // Set the date we're counting down to
+    const countdownDate = new Date("Jan 28, 2025 00:00:00").getTime();
+
+    // Update the countdown every 1 second
+    const countdownInterval = setInterval(function() {
+      const now = new Date().getTime();
+      const timeRemaining = countdownDate - now;
+
+      // Calculate days, hours, minutes, and seconds
+      const days = Math.floor(timeRemaining / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((timeRemaining % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      const minutes = Math.floor((timeRemaining % (1000 * 60 * 60)) / (1000 * 60));
+      const seconds = Math.floor((timeRemaining % (1000 * 60)) / 1000);
+
+      // Display the result in elements with respective IDs
+      document.getElementById("days").innerHTML = days < 10 ? "0" + days : days;
+      document.getElementById("hours").innerHTML = hours < 10 ? "0" + hours : hours;
+      document.getElementById("minutes").innerHTML = minutes < 10 ? "0" + minutes : minutes;
+      document.getElementById("seconds").innerHTML = seconds < 10 ? "0" + seconds : seconds;
+
+      // If the countdown is finished, show a message and play music
+      if (timeRemaining < 0) {
+        clearInterval(countdownInterval);
+        document.querySelector(".countdown").style.display = "none";
+        document.getElementById("message").innerHTML = "🎉 Happy New Year! 🎉";
+        playMusic();
+      }
+    }, 1000);
+
+    // Function to play music
+    function playMusic() {
+      const music = document.getElementById("newYearMusic");
+      music.play();
+    }
+  </script>
+</body>
+</html>
