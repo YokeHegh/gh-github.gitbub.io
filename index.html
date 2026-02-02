@@ -253,20 +253,10 @@
 </head>
 <body>
     <div class="container">
-        <h1>恭贺新年如意</h1>
+        <h1>恭贺新年</h1>
         
-        <!-- 完整的年月日时分秒毫秒倒计时 -->
+        <!-- 简化版倒计时：天时分秒毫秒 -->
         <div class="full-countdown">
-            <!-- <div class="time-unit-full">
-                <span id="years">00</span>
-                <p>年</p>
-            </div>
-            <div class="colon">:</div>
-            <div class="time-unit-full">
-                <span id="months">00</span>
-                <p>月</p>
-            </div> -->
-            <!-- <div class="colon">:</div> -->
             <div class="time-unit-full">
                 <span id="days">00</span>
                 <p>天</p>
@@ -300,7 +290,7 @@
         
         <!-- 音频元素 -->
         <audio id="bgMusic" loop preload="auto" muted>
-            <source src="https://assets.codepen.io/4175254/happy-new-year.mp3" type="audio/mpeg">
+            <source src="https://cdn.pixabay.com/download/audio/2022/12/20/audio_794befddbf.mp3?filename=chinese-new-year-110083.mp3" type="audio/mpeg">
             您的浏览器不支持音频播放
         </audio>
     </div>
@@ -327,8 +317,6 @@
         let targetDate = getNextSpringFestival();
 
         // 获取DOM元素
-        const yearsElement = document.getElementById('years');
-        const monthsElement = document.getElementById('months');
         const daysElement = document.getElementById('days');
         const hoursElement = document.getElementById('hours');
         const minutesElement = document.getElementById('minutes');
@@ -345,8 +333,6 @@
             // 如果倒计时结束
             if (distance < 0) {
                 clearInterval(countdownInterval);
-                yearsElement.textContent = '00';
-                monthsElement.textContent = '00';
                 daysElement.textContent = '00';
                 hoursElement.textContent = '00';
                 minutesElement.textContent = '00';
@@ -358,21 +344,9 @@
             // 计算剩余时间
             const totalDays = Math.floor(distance / (1000 * 60 * 60 * 24));
             
-            // 计算年份（大约）
-            const years = Math.floor(totalDays / 365);
-            const remainingAfterYears = distance - (years * 365 * 24 * 60 * 60 * 1000);
-            
-            // 计算月份（大约）
-            const months = Math.floor(remainingAfterYears / (30 * 24 * 60 * 60 * 1000));
-            const remainingAfterMonths = remainingAfterYears - (months * 30 * 24 * 60 * 60 * 1000);
-            
-            // 计算天数
-            const days = Math.floor(remainingAfterMonths / (1000 * 60 * 60 * 24));
-            const remainingAfterDays = remainingAfterMonths % (1000 * 60 * 60 * 24);
-            
             // 计算小时
-            const hours = Math.floor(remainingAfterDays / (1000 * 60 * 60));
-            const remainingAfterHours = remainingAfterDays % (1000 * 60 * 60);
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const remainingAfterHours = distance % (1000 * 60 * 60);
             
             // 计算分钟
             const minutes = Math.floor(remainingAfterHours / (1000 * 60));
@@ -386,9 +360,7 @@
             const milliseconds = Math.floor(remainingAfterSeconds / 10);
 
             // 显示结果
-            yearsElement.textContent = years.toString().padStart(2, '0');
-            monthsElement.textContent = months.toString().padStart(2, '0');
-            daysElement.textContent = days.toString().padStart(2, '0');
+            daysElement.textContent = totalDays.toString().padStart(2, '0');
             hoursElement.textContent = hours.toString().padStart(2, '0');
             minutesElement.textContent = minutes.toString().padStart(2, '0');
             secondsElement.textContent = seconds.toString().padStart(2, '0');
