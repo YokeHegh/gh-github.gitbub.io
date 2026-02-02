@@ -24,9 +24,19 @@
 
 #### 方式一：网页上传（推荐新手）
 1. 在仓库页面，点击 "Add file" 下拉菜单，选择 "Upload files"
-2. 将 `index.html` 文件从您的计算机拖拽到上传区域
-3. 在 "Commit changes" 区域输入提交信息，例如 "Initial commit"
+2. 将以下文件从您的计算机拖拽到上传区域：
+   - `index.html`
+   - `style.css` (如果有)
+   - `script.js` (如果有)
+   - **`music.mp3`** (您下载并重命名的音乐文件)
+3. 在 "Commit changes" 区域输入提交信息，例如 "Upload project files"
 4. 点击 "Commit changes" 按钮
+
+#### 关于背景音乐的重要说明
+由于代码中引用了本地音乐文件，**您必须手动上传音乐文件**才能听到声音：
+1. 下载您喜欢的《拜新年》MP3音乐。
+2. 将其重命名为 **`music.mp3`**。
+3. 按照上述“网页上传”步骤，将其上传到仓库的**根目录**（和 `index.html` 在一起）。
 
 #### 方式二：使用命令行
 ```bash
@@ -34,10 +44,10 @@
 git clone https://github.com/yourusername/yourusername.github.io.git
 cd yourusername.github.io
 
-# 复制index.html文件到此目录
+# 复制所有项目文件（包括 index.html 和 music.mp3）到此目录
 # 然后添加和提交更改
 git add .
-git commit -m "Initial commit"
+git commit -m "Initial commit with music"
 git push origin main
 ```
 
