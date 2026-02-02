@@ -1,148 +1,431 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-CN">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no">
-  <title>New Year Countdown</title>
-  <style>
-    * {
-      box-sizing: border-box;
-    }
-    body {
-      font-family: Arial, sans-serif;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      height: 100vh;
-      margin: 0;
-      padding: 0 20px; /* Adds padding on mobile */
-      background: linear-gradient(135deg, #ff6b6b, #f7ff88);
-      color: #333;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>过年倒计时</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-    .countdown-container {
-      text-align: center;
-      max-width: 500px;
-      width: 100%;
-    }
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(45deg, #d4af37, #b8860b, #8b0000, #ff0000);
+            height: 100vh;
+            overflow: hidden;
+            position: relative;
+            animation: backgroundShift 10s infinite alternate;
+        }
 
-    h1 {
-      font-size: 2em;
-      margin-bottom: 20px;
-    }
+        /* 添加烟花动画效果 */
+        body::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 30%, rgba(255, 215, 0, 0.4) 0%, transparent 10%),
+                radial-gradient(circle at 80% 70%, rgba(255, 69, 0, 0.4) 0%, transparent 10%),
+                radial-gradient(circle at 40% 10%, rgba(255, 0, 0, 0.3) 0%, transparent 8%);
+            animation: fireworks 3s infinite;
+            pointer-events: none;
+            z-index: -2;
+        }
 
-    .countdown {
-      display: flex;
-      justify-content: space-around;
-      font-size: 3em;
-      font-weight: bold;
-    }
+        @keyframes backgroundShift {
+            0% { background-position: 0% 0%; }
+            100% { background-position: 100% 100%; }
+        }
 
-    .time-section {
-      text-align: center;
-    }
+        @keyframes fireworks {
+            0% { opacity: 0.7; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.05); }
+            100% { opacity: 0.7; transform: scale(1); }
+        }
 
-    .time-section span {
-      display: block;
-      font-size: 0.6em;
-      font-weight: normal;
-    }
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            text-align: center;
+            color: #fff;
+            padding: 20px;
+        }
 
-    .message {
-      margin-top: 20px;
-      font-size: 1.2em;
-      color: #444;
-    }
+        h1 {
+            font-size: 2.5em;
+            margin-bottom: 30px;
+            text-shadow: 0 0 10px #ff0, 0 0 20px #ff0, 0 0 30px #ff0;
+            animation: glow 2s ease-in-out infinite alternate;
+        }
 
-    .play-music-btn {
-      margin-top: 30px;
-      padding: 10px 20px;
-      font-size: 1em;
-      cursor: pointer;
-      background-color: #333;
-      color: #fff;
-      border: none;
-      border-radius: 5px;
-    }
+        @keyframes glow {
+            from {
+                text-shadow: 0 0 10px #ff0, 0 0 20px #ff0, 0 0 30px #ff0;
+            }
+            to {
+                text-shadow: 0 0 15px #ff0, 0 0 25px #ff0, 0 0 35px #ff0;
+            }
+        }
 
-    .play-music-btn:hover {
-      background-color: #555;
-    }
+        .full-countdown {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            margin: 20px 0;
+            flex-wrap: wrap;
+        }
 
-    /* Responsive adjustments for mobile */
-    @media (max-width: 480px) {
-      .countdown {
-        font-size: 2em;
-        gap: 5px;
-      }
-      .play-music-btn {
-        font-size: 0.9em;
-        padding: 8px 15px;
-      }
-    }
-  </style>
+        .time-unit-full {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 15px;
+            padding: 15px;
+            min-width: 70px;
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+
+        .time-unit-full span {
+            font-size: 2.5em;
+            font-weight: bold;
+            color: #ffeb3b;
+            text-shadow: 0 0 10px #ff0;
+            line-height: 1;
+        }
+
+        .time-unit-full p {
+            margin-top: 8px;
+            font-size: 0.9em;
+            color: #fff;
+            text-shadow: 0 0 5px #000;
+        }
+
+        .countdown {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin: 20px 0;
+        }
+
+        .time-unit {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 15px;
+            padding: 20px;
+            min-width: 100px;
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+
+        .time-unit span {
+            font-size: 3.5em;
+            font-weight: bold;
+            color: #ffeb3b;
+            text-shadow: 0 0 10px #ff0;
+            line-height: 1;
+        }
+
+        .time-unit p {
+            margin-top: 10px;
+            font-size: 1em;
+            color: #fff;
+            text-shadow: 0 0 5px #000;
+        }
+
+        .colon {
+            font-size: 2.5em;
+            color: #ffeb3b;
+            text-shadow: 0 0 10px #ff0;
+            display: flex;
+            align-items: center;
+            animation: blink 1s infinite;
+        }
+
+        @keyframes blink {
+            0%, 50% { opacity: 1; }
+            51%, 100% { opacity: 0.3; }
+        }
+
+        /* 移动设备适配 */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2em;
+            }
+            
+            .time-unit span {
+                font-size: 2.5em;
+            }
+            
+            .time-unit {
+                min-width: 80px;
+                padding: 15px;
+            }
+            
+            .time-unit-full span {
+                font-size: 2em;
+            }
+            
+            .time-unit-full {
+                min-width: 60px;
+                padding: 12px;
+            }
+            
+            .colon {
+                font-size: 2em;
+            }
+        }
+
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 1.5em;
+            }
+            
+            .time-unit span {
+                font-size: 1.8em;
+            }
+            
+            .time-unit {
+                min-width: 70px;
+                padding: 12px;
+            }
+            
+            .time-unit-full span {
+                font-size: 1.5em;
+            }
+            
+            .time-unit-full {
+                min-width: 50px;
+                padding: 10px;
+            }
+            
+            .colon {
+                font-size: 1.5em;
+            }
+            
+            .full-countdown {
+                gap: 5px;
+            }
+            
+            .countdown {
+                gap: 5px;
+            }
+        }
+    </style>
 </head>
 <body>
-  <div class="countdown-container">
-    <h1>距离2026年 丙午马年 除夕夜 还有</h1>
-    <div class="countdown">
-      <div class="time-section">
-        <div id="days">00</div>
-        <span>Days</span>
-      </div>
-      <div class="time-section">
-        <div id="hours">00</div>
-        <span>Hours</span>
-      </div>
-      <div class="time-section">
-        <div id="minutes">00</div>
-        <span>Minutes</span>
-      </div>
-      <div class="time-section">
-        <div id="seconds">00</div>
-        <span>Seconds</span>
-      </div>
+    <div class="container">
+        <h1>恭贺新年</h1>
+        
+        <!-- 完整的年月日时分秒毫秒倒计时 -->
+        <div class="full-countdown">
+            <div class="time-unit-full">
+                <span id="years">00</span>
+                <p>年</p>
+            </div>
+            <div class="colon">:</div>
+            <div class="time-unit-full">
+                <span id="months">00</span>
+                <p>月</p>
+            </div>
+            <div class="colon">:</div>
+            <div class="time-unit-full">
+                <span id="days">00</span>
+                <p>天</p>
+            </div>
+            <div class="colon">:</div>
+            <div class="time-unit-full">
+                <span id="hours">00</span>
+                <p>时</p>
+            </div>
+        </div>
+        
+        <div class="countdown">
+            <div class="time-unit">
+                <span id="minutes">00</span>
+                <p>分</p>
+            </div>
+            <div class="colon">:</div>
+            <div class="time-unit">
+                <span id="seconds">00</span>
+                <p>秒</p>
+            </div>
+            <div class="colon">:</div>
+            <div class="time-unit">
+                <span id="milliseconds">00</span>
+                <p>毫秒</p>
+            </div>
+        </div>
+        
+        <!-- 音频元素 -->
+        <audio id="bgMusic" loop preload="auto" muted>
+            <source src="https://assets.codepen.io/4175254/happy-new-year.mp3" type="audio/mpeg">
+            您的浏览器不支持音频播放
+        </audio>
     </div>
-    <div class="message" id="message"></div>
-    <button class="play-music-btn" onclick="playMusic()">Play Music</button>
-    <audio id="newYearMusic" src="your-music-file.mp3" preload="auto"></audio>
-  </div>
+    
+    <script>
+        // 设置目标时间（这里设置为春节日期）
+        // 如果今年的春节已过，则设为明年春节
+        function getNextSpringFestival() {
+            const now = new Date();
+            const currentYear = now.getFullYear();
+            
+            // 春节日期每年不同，这里以2026年春节（2月17日）为例
+            // 实际应用中可以根据农历算法动态计算
+            let springFestival = new Date(currentYear, 1, 17); // 2月17日是2026年春节
+            
+            // 如果今年的春节已经过了，就设置为明年的春节
+            if (now > springFestival) {
+                springFestival = new Date(currentYear + 1, 1, 17);
+            }
+            
+            return springFestival;
+        }
 
-  <script>
-    // Set the date we're counting down to
-    const countdownDate = new Date("Feb 16, 2026 00:00:00").getTime();
+        let targetDate = getNextSpringFestival();
 
-    // Update the countdown every 1 second
-    const countdownInterval = setInterval(function() {
-      const now = new Date().getTime();
-      const timeRemaining = countdownDate - now;
+        // 获取DOM元素
+        const yearsElement = document.getElementById('years');
+        const monthsElement = document.getElementById('months');
+        const daysElement = document.getElementById('days');
+        const hoursElement = document.getElementById('hours');
+        const minutesElement = document.getElementById('minutes');
+        const secondsElement = document.getElementById('seconds');
+        const millisecondsElement = document.getElementById('milliseconds');
+        const bgMusic = document.getElementById('bgMusic');
 
-      // Calculate days, hours, minutes, and seconds
-      const days = Math.floor(timeRemaining / (1000 * 60 * 60 * 24));
-      const hours = Math.floor((timeRemaining % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-      const minutes = Math.floor((timeRemaining % (1000 * 60 * 60)) / (1000 * 60));
-      const seconds = Math.floor((timeRemaining % (1000 * 60)) / 1000);
+        // 更新倒计时函数
+        function updateCountdown() {
+            const now = new Date().getTime();
+            const distance = targetDate.getTime() - now;
 
-      // Display the result in elements with respective IDs
-      document.getElementById("days").innerHTML = days < 10 ? "0" + days : days;
-      document.getElementById("hours").innerHTML = hours < 10 ? "0" + hours : hours;
-      document.getElementById("minutes").innerHTML = minutes < 10 ? "0" + minutes : minutes;
-      document.getElementById("seconds").innerHTML = seconds < 10 ? "0" + seconds : seconds;
+            // 如果倒计时结束
+            if (distance < 0) {
+                clearInterval(countdownInterval);
+                yearsElement.textContent = '00';
+                monthsElement.textContent = '00';
+                daysElement.textContent = '00';
+                hoursElement.textContent = '00';
+                minutesElement.textContent = '00';
+                secondsElement.textContent = '00';
+                millisecondsElement.textContent = '00';
+                return;
+            }
 
-      // If the countdown is finished, show a message and play music
-      if (timeRemaining < 0) {
-        clearInterval(countdownInterval);
-        document.querySelector(".countdown").style.display = "none";
-        document.getElementById("message").innerHTML = "🎉 Happy New Year! 🎉";
-        playMusic();
-      }
-    }, 1000);
+            // 计算剩余时间
+            const totalDays = Math.floor(distance / (1000 * 60 * 60 * 24));
+            
+            // 计算年份（大约）
+            const years = Math.floor(totalDays / 365);
+            const remainingAfterYears = distance - (years * 365 * 24 * 60 * 60 * 1000);
+            
+            // 计算月份（大约）
+            const months = Math.floor(remainingAfterYears / (30 * 24 * 60 * 60 * 1000));
+            const remainingAfterMonths = remainingAfterYears - (months * 30 * 24 * 60 * 60 * 1000);
+            
+            // 计算天数
+            const days = Math.floor(remainingAfterMonths / (1000 * 60 * 60 * 24));
+            const remainingAfterDays = remainingAfterMonths % (1000 * 60 * 60 * 24);
+            
+            // 计算小时
+            const hours = Math.floor(remainingAfterDays / (1000 * 60 * 60));
+            const remainingAfterHours = remainingAfterDays % (1000 * 60 * 60);
+            
+            // 计算分钟
+            const minutes = Math.floor(remainingAfterHours / (1000 * 60));
+            const remainingAfterMinutes = remainingAfterHours % (1000 * 60);
+            
+            // 计算秒
+            const seconds = Math.floor(remainingAfterMinutes / 1000);
+            const remainingAfterSeconds = remainingAfterMinutes % 1000;
+            
+            // 计算毫秒
+            const milliseconds = Math.floor(remainingAfterSeconds / 10);
 
-    // Function to play music
-    function playMusic() {
-      const music = document.getElementById("newYearMusic");
-      music.play();
-    }
-  </script>
+            // 显示结果
+            yearsElement.textContent = years.toString().padStart(2, '0');
+            monthsElement.textContent = months.toString().padStart(2, '0');
+            daysElement.textContent = days.toString().padStart(2, '0');
+            hoursElement.textContent = hours.toString().padStart(2, '0');
+            minutesElement.textContent = minutes.toString().padStart(2, '0');
+            secondsElement.textContent = seconds.toString().padStart(2, '0');
+            millisecondsElement.textContent = milliseconds.toString().padStart(2, '0');
+        }
+
+        // 每10毫秒更新一次倒计时（为了毫秒显示更流畅）
+        const countdownInterval = setInterval(updateCountdown, 10);
+
+        // 尝试自动播放音乐
+        function attemptPlayMusic() {
+            bgMusic.muted = false; // 取消静音
+            bgMusic.play()
+                .then(() => {
+                    console.log('背景音乐开始播放');
+                    bgMusic.muted = false;
+                })
+                .catch(e => {
+                    console.error('自动播放音乐失败:', e);
+                    // 如果自动播放失败，等待用户交互后再尝试
+                    setupUserInteractionForAudio();
+                });
+        }
+
+        // 设置用户交互以启用音频播放
+        function setupUserInteractionForAudio() {
+            const playOnInteraction = () => {
+                bgMusic.muted = false; // 取消静音
+                bgMusic.play()
+                    .then(() => {
+                        console.log('用户交互后音乐开始播放');
+                    })
+                    .catch(e => {
+                        console.error('用户交互后音乐播放失败:', e);
+                    });
+                
+                // 移除事件监听器，避免重复触发
+                document.body.removeEventListener('touchstart', playOnInteraction);
+                document.body.removeEventListener('click', playOnInteraction);
+                document.body.removeEventListener('touchend', playOnInteraction);
+            };
+
+            // 在移动端和桌面端都添加事件监听器
+            document.body.addEventListener('touchstart', playOnInteraction, { once: true });
+            document.body.addEventListener('click', playOnInteraction, { once: true });
+            document.body.addEventListener('touchend', playOnInteraction, { once: true });
+        }
+
+        // 页面加载完成后尝试播放音乐
+        window.addEventListener('load', () => {
+            // 延迟一点时间再尝试播放，确保页面完全加载
+            setTimeout(attemptPlayMusic, 100);
+        });
+
+        // 页面可见性变化时处理音频播放
+        document.addEventListener('visibilitychange', () => {
+            if (document.visibilityState === 'visible' && bgMusic.paused) {
+                // 延迟一点时间再尝试播放，确保用户注意力在页面上
+                setTimeout(attemptPlayMusic, 500);
+            }
+        });
+
+        // 初始化倒计时
+        updateCountdown();
+    </script>
 </body>
 </html>
