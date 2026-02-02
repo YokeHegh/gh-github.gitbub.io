@@ -161,6 +161,29 @@
             0%, 50% { opacity: 1; }
             51%, 100% { opacity: 0.3; }
         }
+        
+        .play-btn {
+            margin-top: 30px;
+            padding: 15px 30px;
+            font-size: 1.2em;
+            background: linear-gradient(45deg, #ff6b6b, #ffa500);
+            border: none;
+            border-radius: 50px;
+            color: white;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
+            font-weight: bold;
+        }
+        
+        .play-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+        }
+        
+        .play-btn:active {
+            transform: translateY(1px);
+        }
 
         /* 移动设备适配 */
         @media (max-width: 768px) {
@@ -272,6 +295,9 @@
             </div>
         </div>
         
+        <!-- 添加一个显眼的播放按钮 -->
+        <button id="playButton" class="play-btn">🎵 点击播放音乐</button>
+        
         <!-- 音频元素 -->
         <audio id="bgMusic" loop preload="auto" muted>
             <source src="https://assets.codepen.io/4175254/happy-new-year.mp3" type="audio/mpeg">
@@ -309,6 +335,7 @@
         const secondsElement = document.getElementById('seconds');
         const millisecondsElement = document.getElementById('milliseconds');
         const bgMusic = document.getElementById('bgMusic');
+        const playButton = document.getElementById('playButton');
 
         // 更新倒计时函数
         function updateCountdown() {
@@ -378,6 +405,10 @@
                 .then(() => {
                     console.log('背景音乐开始播放');
                     bgMusic.muted = false;
+                    if (playButton) {
+                        playButton.textContent = '🎵 音乐播放中...';
+                        playButton.disabled = true;
+                    }
                 })
                 .catch(e => {
                     console.error('自动播放音乐失败:', e);
@@ -393,6 +424,10 @@
                 bgMusic.play()
                     .then(() => {
                         console.log('用户交互后音乐开始播放');
+                        if (playButton) {
+                            playButton.textContent = '🎵 音乐播放中...';
+                            playButton.disabled = true;
+                        }
                     })
                     .catch(e => {
                         console.error('用户交互后音乐播放失败:', e);
@@ -408,6 +443,24 @@
             document.body.addEventListener('touchstart', playOnInteraction, { once: true });
             document.body.addEventListener('click', playOnInteraction, { once: true });
             document.body.addEventListener('touchend', playOnInteraction, { once: true });
+        }
+        
+        // 播放按钮事件
+        if (playButton) {
+            playButton.addEventListener('click', function() {
+                bgMusic.muted = false; // 取消静音
+                bgMusic.play()
+                    .then(() => {
+                        console.log('通过按钮播放音乐');
+                        playButton.textContent = '🎵 音乐播放中...';
+                        playButton.disabled = true;
+                    })
+                    .catch(e => {
+                        console.error('按钮点击播放音乐失败:', e);
+                        // 尝试通过用户手势播放
+                        setupUserInteractionForAudio();
+                    });
+            });
         }
 
         // 页面加载完成后尝试播放音乐
