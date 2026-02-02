@@ -297,21 +297,20 @@
     
     <script>
         // 设置目标时间（这里设置为春节日期）
-        // 如果今年的春节已过，则设为明年春节
         function getNextSpringFestival() {
             const now = new Date();
-            const currentYear = now.getFullYear();
             
-            // 春节日期每年不同，这里以2026年春节（2月17日）为例
-            // 实际应用中可以根据农历算法动态计算
-            let springFestival = new Date(currentYear, 1, 17); // 2月17日是2026年春节
+            // 2026年春节是2月17日
+            const springFestival2026 = new Date(2026, 1, 17); // 2月17日 (月份从0开始，所以1表示2月)
             
-            // 如果今年的春节已经过了，就设置为明年的春节
-            if (now > springFestival) {
-                springFestival = new Date(currentYear + 1, 1, 17);
+            // 如果当前日期已经超过2026年春节，则设置为2027年春节
+            if (now > springFestival2026) {
+                // 2027年春节是2月17日
+                return new Date(2027, 1, 17);
+            } else {
+                // 否则，如果还没到2026年春节，则使用2026年春节
+                return springFestival2026;
             }
-            
-            return springFestival;
         }
 
         let targetDate = getNextSpringFestival();
